@@ -1,9 +1,19 @@
 package br.dev.diego.apiparkingcontrol.controllers;
 
+import br.dev.diego.apiparkingcontrol.dto.ParkingSpotDTO;
+import br.dev.diego.apiparkingcontrol.requests.ParkingSpotRequest;
+import br.dev.diego.apiparkingcontrol.responses.ParkingSpotResponse;
 import br.dev.diego.apiparkingcontrol.services.ParkingSpotService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/parkin-spot")
@@ -11,6 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class ParkingSpotController {
 
     private final ParkingSpotService parkingSpotService;
+
+    @PostMapping
+    public ResponseEntity<ParkingSpotResponse> saveParkingSpot(@RequestBody @Valid ParkingSpotRequest request) {
+        ParkingSpotDTO dto = parkingSpotService.save(new ParkingSpotDTO(request));
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
+        return ResponseEntity.created(uri).body(new ParkingSpotResponse(dto));
+    }
 
 
 }

@@ -1,5 +1,6 @@
 package br.dev.diego.apiparkingcontrol.entities;
 
+import br.dev.diego.apiparkingcontrol.dto.ParkingSpotDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,14 +9,21 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.UUID;
 
 @Data
 @Entity
 @Table(name = "TB_PARKING_SPOT")
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class ParkingSpot {
 
     @Id
@@ -31,11 +39,19 @@ public class ParkingSpot {
     private String block;
     @OneToOne
     private Car car;
-
     private LocalDateTime registrationDate;
+
+    public ParkingSpot(ParkingSpotDTO dto, Car car) {
+        parkingSpotNumber = dto.getParkingSpotNumber();
+        responsibleName = dto.getResponsibleName();
+        apartment = dto.getApartment();
+        block = dto.getBlock();
+        this.car = car;
+    }
 
     @PrePersist
     private void setRegistrationDate() {
-        registrationDate = LocalDateTime.now();
+        registrationDate = LocalDateTime.now(ZoneId.of("UTC"));
     }
+
 }
