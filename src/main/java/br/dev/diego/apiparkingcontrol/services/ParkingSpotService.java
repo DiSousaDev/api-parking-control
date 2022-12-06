@@ -5,7 +5,9 @@ import br.dev.diego.apiparkingcontrol.entities.Car;
 import br.dev.diego.apiparkingcontrol.entities.ParkingSpot;
 import br.dev.diego.apiparkingcontrol.repositories.CarRepository;
 import br.dev.diego.apiparkingcontrol.repositories.ParkingSpotRepository;
+import br.dev.diego.apiparkingcontrol.services.exceptions.DatabaseException;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,9 +19,15 @@ public class ParkingSpotService {
     private final CarRepository carRepository;
 
     @Transactional
-    public ParkingSpotDTO save(ParkingSpotDTO parkingSpotInsertRCD) {
-        Car car = carRepository.save(new Car(parkingSpotInsertRCD.getCar()));
-        ParkingSpot parkingSpot = repository.save(new ParkingSpot(parkingSpotInsertRCD, car));
+    public ParkingSpotDTO save(ParkingSpotDTO dto) {
+        Car car;
+        ParkingSpot parkingSpot;
+        try {
+            car = carRepository.save(new Car(dto.getCar()));
+            parkingSpot = repository.save(new ParkingSpot(dto, car));
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException("Erro ao persistir entidade. " + e.getCause().getCause().toString());
+        }
         return new ParkingSpotDTO(parkingSpot);
     }
 
