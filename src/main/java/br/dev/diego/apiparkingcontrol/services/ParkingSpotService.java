@@ -31,4 +31,19 @@ public class ParkingSpotService {
         return new ParkingSpotDTO(parkingSpot);
     }
 
+    @Transactional(readOnly = true)
+    public boolean existsByLicensePlateCar(String licensePlate) {
+        return carRepository.findCarByLicensePlateCar(licensePlate).isPresent();
+    }
+
+    @Transactional(readOnly = true)
+    public boolean existsByParkingSpotNumber(String parkingSpotNumber) {
+        return repository.findParkingSpotByParkingSpotNumber(parkingSpotNumber).isPresent();
+    }
+
+    @Transactional(readOnly = true)
+    public boolean existsByApartmentAndBlock(String apartment, String block) {
+        return repository.findParkingSpotByApartmentAndBlock(apartment, block).isPresent();
+    }
+
 }

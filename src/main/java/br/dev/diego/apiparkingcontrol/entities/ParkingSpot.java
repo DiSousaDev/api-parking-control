@@ -1,11 +1,13 @@
 package br.dev.diego.apiparkingcontrol.entities;
 
 import br.dev.diego.apiparkingcontrol.dto.ParkingSpotDTO;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
@@ -37,7 +39,8 @@ public class ParkingSpot {
     private String apartment;
     @Column(nullable = false, length = 30)
     private String block;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "car_id", referencedColumnName = "id")
     private Car car;
     private LocalDateTime registrationDate;
 

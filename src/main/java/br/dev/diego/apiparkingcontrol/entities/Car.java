@@ -30,7 +30,7 @@ public class Car {
     private String modelCar;
     @Column(nullable = false, length = 70)
     private String colorCar;
-    @OneToOne
+    @OneToOne(mappedBy = "car")
     private ParkingSpot parkingSpot;
 
     public Car(CarDTO dto) {

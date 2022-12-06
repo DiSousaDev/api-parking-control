@@ -6,10 +6,12 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 public class CarDTO {
 
     private Long id;
@@ -22,6 +24,10 @@ public class CarDTO {
     private String modelCar;
     @NotBlank
     private String colorCar;
+
+    public CarDTO(Long id) {
+        this.id = id;
+    }
 
     public CarDTO(Car entity) {
         id = entity.getId();
