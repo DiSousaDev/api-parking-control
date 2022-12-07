@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -20,6 +21,7 @@ public class ParkingSpotDTO {
     private String responsibleName;
     private String apartment;
     private String block;
+    private LocalDateTime registrationDate;
     private CarDTO car;
 
     public ParkingSpotDTO(ParkingSpot entity) {
@@ -28,6 +30,7 @@ public class ParkingSpotDTO {
         responsibleName = entity.getResponsibleName();
         apartment = entity.getApartment();
         block = entity.getBlock();
+        registrationDate = entity.getRegistrationDate();
         car = new CarDTO(entity.getCar());
     }
 

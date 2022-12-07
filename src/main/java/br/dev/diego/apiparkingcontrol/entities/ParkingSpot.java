@@ -44,12 +44,12 @@ public class ParkingSpot {
     private Car car;
     private LocalDateTime registrationDate;
 
-    public ParkingSpot(ParkingSpotDTO dto, Car car) {
+    public ParkingSpot(ParkingSpotDTO dto) {
         parkingSpotNumber = dto.getParkingSpotNumber();
         responsibleName = dto.getResponsibleName();
         apartment = dto.getApartment();
         block = dto.getBlock();
-        this.car = car;
+        car = new Car(dto.getCar());
     }
 
     @PrePersist
